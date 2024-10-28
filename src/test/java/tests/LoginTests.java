@@ -6,62 +6,65 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 @Test(groups = {TestGroups.REGRESSION, TestGroups.LOGIN})
 public class LoginTests {
+    private static final String PATH_DRIVER_CHROME = "C:\\Selenium\\chromedriver.exe";
+    private static final String BASE_URL = "https://www.saucedemo.com/";
+    private static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
-    @Test(groups = {TestGroups.SANITY})
+    @BeforeMethod
+    public void setUp() {
+        System.setProperty("webdriver.chrome.driver", PATH_DRIVER_CHROME);
+        WebDriver chromeDriver = new ChromeDriver();
+        chromeDriver.manage().window().maximize();
+        driver.set(chromeDriver);
+    }
+
+    public WebDriver getDriver() {
+        return driver.get();
+    }
+
+    @Test(groups = {"sanity"})
     public void testSuccessfulLogin() {
-        final String pathDriverChrome = "C:\\Selenium\\chromedriver.exe";
-        final String baseUrl = "https://www.saucedemo.com/";
-        System.setProperty("webdriver.chrome.driver", pathDriverChrome);
-        WebDriver driver = new ChromeDriver();
+        getDriver().get(BASE_URL);
 
-        try {
-            driver.manage().window().maximize();
+        WebElement inputName = getDriver().findElement(By.id("user-name"));
+        inputName.sendKeys("standard_user");
 
-            driver.get(baseUrl);
+        WebElement inputPassword = getDriver().findElement(By.id("password"));
+        inputPassword.sendKeys("secret_sauce");
 
-            final WebElement inputName = driver.findElement(By.id("user-name"));
-            inputName.sendKeys("standard_user");
+        WebElement loginButton = getDriver().findElement(By.id("login-button"));
+        loginButton.click();
 
-            final WebElement inputPassword = driver.findElement(By.id("password"));
-            inputPassword.sendKeys("secret_sauce");
-
-            final WebElement loginButton = driver.findElement(By.id("login-button"));
-            loginButton.click();
-
-            Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/inventory.html", "Wrong URL");
-        } finally {
-            driver.quit();
-        }
+        Assert.assertEquals(getDriver().getCurrentUrl(), "https://www.saucedemo.com/inventory.html", "Wrong URL");
     }
 
     @Test
     public void testUnsuccessfulLoginWrongPassword() {
-        final String pathDriverChrome = "C:\\Selenium\\chromedriver.exe";
-        final String baseUrl = "https://www.saucedemo.com/";
-        System.setProperty("webdriver.chrome.driver", pathDriverChrome);
-        WebDriver driver = new ChromeDriver();
+        getDriver().get(BASE_URL);
 
-        try {
-            driver.manage().window().maximize();
+        WebElement inputName = getDriver().findElement(By.id("user-name"));
+        inputName.sendKeys("standard_user");
 
-            driver.get(baseUrl);
+        WebElement inputPassword = getDriver().findElement(By.id("password"));
+        inputPassword.sendKeys("wrong_password");
 
-            final WebElement inputName = driver.findElement(By.id("user-name"));
-            inputName.sendKeys("standard_user");
+        WebElement loginButton = getDriver().findElement(By.id("login-button"));
+        loginButton.click();
 
-            final WebElement inputPassword = driver.findElement(By.id("password"));
-            inputPassword.sendKeys("wrong_password");
+        Assert.assertEquals(getDriver().getCurrentUrl(), "https://www.saucedemo.com/", "Wrong URL");
+    }
 
-            final WebElement loginButton = driver.findElement(By.id("login-button"));
-            loginButton.click();
-
-            Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/", "Wrong URL");
-        } finally {
-            driver.quit();
+    @AfterMethod
+    public void tearDown() {
+        if (getDriver() != null) {
+            getDriver().quit();
+            driver.remove();  // Clear the ThreadLocal instance
         }
     }
 }
