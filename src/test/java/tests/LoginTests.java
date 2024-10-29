@@ -28,7 +28,7 @@ public class LoginTests {
         return driver.get();
     }
 
-    @Test(groups = {"sanity"})
+    @Test(groups = {TestGroups.SANITY})
     public void testSuccessfulLogin() {
         getDriver().get(BASE_URL);
 
