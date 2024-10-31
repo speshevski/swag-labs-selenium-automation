@@ -5,10 +5,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.time.Duration;
 
 @Test(groups = {TestGroups.REGRESSION, TestGroups.LOGIN})
 public class LoginTests {
@@ -21,6 +25,8 @@ public class LoginTests {
         System.setProperty("webdriver.chrome.driver", PATH_DRIVER_CHROME);
         WebDriver chromeDriver = new ChromeDriver();
         chromeDriver.manage().window().maximize();
+        chromeDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
+        chromeDriver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(2)); // waits for DOM structure of the page to be loaded
         driver.set(chromeDriver);
     }
 
@@ -41,7 +47,10 @@ public class LoginTests {
         WebElement loginButton = getDriver().findElement(By.id("login-button"));
         loginButton.click();
 
-        Assert.assertEquals(getDriver().getCurrentUrl(), "https://www.saucedemo.com/inventory.html", "Wrong URL");
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(3)); // explicit wait
+        wait.until(ExpectedConditions.urlToBe("https://www.saucedemo.com/inventory.html"));
+        WebElement pageTitle = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[data-test='title']")));
+        Assert.assertEquals(pageTitle.getText(), "Products", "Incorrect page title!");
     }
 
     @Test
