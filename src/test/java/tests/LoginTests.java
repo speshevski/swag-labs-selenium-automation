@@ -41,7 +41,7 @@ public class LoginTests {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3)); // explicit wait
             wait.until(ExpectedConditions.urlToBe(INVENTORY_PAGE_URL));
             WebElement pageTitle = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[data-test='title']")));
-            Assert.assertEquals(pageTitle.getText(), CommonStrings.INVENTORY_PAGE_TITLE, "Incorrect page title!");
+            Assert.assertEquals(pageTitle.getText(), CommonStrings.getInventoryPageTitle(), "Incorrect page title!");
         } finally {
             WebdriverUtils.quitDriver(driver);
         }

@@ -73,4 +73,8 @@ public class PropertiesUtils {
     public static String getPassword() {
         return getProperty("password");
     }
+
+    public static String getLocale() {
+        return getProperty("locale");
+    }
 }
