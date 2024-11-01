@@ -25,9 +25,17 @@ public class PropertiesUtils {
         return loadPropertiesFile(propertiesPath);
     }
 
-    public static String getProperty(String key) {
+    private static String getProperty(String key) {
         String property = properties.getProperty(key);
-        Assert.assertNotNull(property, "Unable to find property: '" + key + "' in properties file: " + propertiesPath);
+        Assert.assertNotNull(property, "Unable to find property: '" + key + "' in properties file: '" + propertiesPath + "'");
         return property;
+    }
+
+    public static String getBrowser() {
+        return getProperty("browser");
+    }
+
+    public static String getDriverFolder() {
+        return getProperty("driverFolder");
     }
 }

@@ -11,8 +11,8 @@ import java.time.Duration;
 public class WebdriverUtils {
 
     public static WebDriver setUpDriver() {
-        String browser = PropertiesUtils.getProperty("browser");
-        String driverFolder = PropertiesUtils.getProperty("driverFolder");
+        String browser = PropertiesUtils.getBrowser();
+        String driverFolder = PropertiesUtils.getDriverFolder();
         String driverPathChrome = driverFolder + "\\chromedriver.exe";
         String driverPathFirefox = driverFolder + "\\geckodriver.exe";
         String driverPathEdge = driverFolder + "\\msedgedriver.exe";
