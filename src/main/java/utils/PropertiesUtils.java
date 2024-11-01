@@ -65,4 +65,12 @@ public class PropertiesUtils {
             default -> throw new IllegalArgumentException("Unsupported environment: " + env);
         };
     }
+
+    public static String getUsername() {
+        return getProperty("username");
+    }
+
+    public static String getPassword() {
+        return getProperty("password");
+    }
 }
