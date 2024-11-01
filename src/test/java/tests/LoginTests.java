@@ -8,19 +8,19 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import utils.PropertiesUtils;
 import utils.WebdriverUtils;
 
 import java.time.Duration;
 
 @Test(groups = {TestGroups.REGRESSION, TestGroups.LOGIN})
 public class LoginTests {
-    private static final String BASE_URL = "https://www.saucedemo.com/";
 
     @Test(groups = {TestGroups.SANITY})
     public void testSuccessfulLogin() {
         WebDriver driver = WebdriverUtils.setUpDriver();
         try {
-            driver.get(BASE_URL);
+            driver.get(PropertiesUtils.getBaseUrl());
             WebElement inputName = driver.findElement(By.id("user-name"));
             inputName.sendKeys("standard_user");
 
@@ -43,7 +43,7 @@ public class LoginTests {
     public void testUnsuccessfulLoginWrongPassword() {
         WebDriver driver = WebdriverUtils.setUpDriver();
         try {
-            driver.get(BASE_URL);
+            driver.get(PropertiesUtils.getBaseUrl());
             WebElement inputName = driver.findElement(By.id("user-name"));
             inputName.sendKeys("standard_user");
 

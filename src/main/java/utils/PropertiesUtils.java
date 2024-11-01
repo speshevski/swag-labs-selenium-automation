@@ -1,5 +1,6 @@
 package utils;
 
+import data.Environments;
 import org.testng.Assert;
 
 import java.io.IOException;
@@ -37,5 +38,31 @@ public class PropertiesUtils {
 
     public static String getDriverFolder() {
         return getProperty("driverFolder");
+    }
+
+    public static String getEnvironment() {
+        return getProperty("environment");
+    }
+
+    private static String getTestBaseUrl() {
+        return getProperty("testBaseUrl");
+    }
+
+    private static String getStageBaseUrl() {
+        return getProperty("stageBaseUrl");
+    }
+
+    private static String getProdBaseUrl() {
+        return getProperty("prodBaseUrl");
+    }
+
+    public static String getBaseUrl() {
+        String env = getEnvironment();
+        return switch (env) {
+            case Environments.TEST -> getTestBaseUrl();
+            case Environments.STAGE -> getStageBaseUrl();
+            case Environments.PROD -> getProdBaseUrl();
+            default -> throw new IllegalArgumentException("Unsupported environment: " + env);
+        };
     }
 }
