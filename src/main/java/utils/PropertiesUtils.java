@@ -17,7 +17,7 @@ public class PropertiesUtils {
         try {
             properties.load(inputStream);
         } catch (IOException e) {
-            Assert.fail("Unable to load properties file: " + filePath + ": " + e.getMessage());
+            Assert.fail("Unable to load properties file: " + filePath + ". File does not exist!");
         }
         return properties;
     }
