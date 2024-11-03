@@ -1,5 +1,6 @@
 package utils;
 
+import data.Browsers;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -11,28 +12,19 @@ import java.time.Duration;
 public class WebdriverUtils {
 
     public static WebDriver setUpDriver() {
-        String browser = PropertiesUtils.getBrowser();
-        String driverFolder = PropertiesUtils.getDriverFolder();
-        String driverPathChrome = driverFolder + "\\chromedriver.exe";
-        String driverPathFirefox = driverFolder + "\\geckodriver.exe";
-        String driverPathEdge = driverFolder + "\\msedgedriver.exe";
-
+        final String browser = PropertiesUtils.getBrowser();
         WebDriver driver = null;
-
-        LoggerUtils.log.info("setUpDriver(" + browser + ")");
+        LoggerUtils.log.info("setUpDriver({})", browser);
         switch (browser) {
-            case "chrome": {
-                System.setProperty("webdriver.chrome.driver", driverPathChrome);
+            case Browsers.CHROME: {
                 driver = new ChromeDriver();
                 break;
             }
-            case "firefox": {
-                System.setProperty("webdriver.gecko.driver", driverPathFirefox);
+            case Browsers.FIREFOX: {
                 driver = new FirefoxDriver();
                 break;
             }
-            case "edge": {
-                System.setProperty("webdriver.edge.driver", driverPathEdge);
+            case Browsers.EDGE: {
                 driver = new EdgeDriver();
                 break;
             }
