@@ -26,14 +26,10 @@ public class LoginTests {
     public void testSuccessfulLogin() {
         log.info("[TEST] Starting test: testSuccessfulLogin()");
         WebDriver driver = WebdriverUtils.setUpDriver();
-        final String BASE_URL = PropertiesUtils.getBaseUrl();
         final String USERNAME = PropertiesUtils.getUsername();
         final String PASSWORD = PropertiesUtils.getPassword();
-        final String LOGIN_PAGE_URL = BASE_URL + PageUrlPaths.LOGIN_PAGE;
-        final String INVENTORY_PAGE_URL = BASE_URL + PageUrlPaths.INVENTORY_PAGE;
 
         try {
-            log.debug("URL: {}", LOGIN_PAGE_URL);
             LoginPage loginPage = new LoginPage(driver);
             loginPage
                     .openLoginPage()
@@ -43,7 +39,7 @@ public class LoginTests {
 
             log.debug("Verify Inventory Page");
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3)); // explicit wait
-            wait.until(ExpectedConditions.urlToBe(INVENTORY_PAGE_URL));
+            wait.until(ExpectedConditions.urlToBe(loginPage.getInventoryPageUrl()));
             WebElement pageTitle = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[data-test='title']")));
             Assert.assertEquals(pageTitle.getText(), CommonStrings.getInventoryPageTitle(), "Incorrect page title!");
         } finally {
@@ -55,23 +51,18 @@ public class LoginTests {
     @Test
     public void testUnsuccessfulLoginWrongPassword() {
         WebDriver driver = WebdriverUtils.setUpDriver();
-        final String BASE_URL = PropertiesUtils.getBaseUrl();
         final String USERNAME = PropertiesUtils.getUsername();
         final String PASSWORD = "wrong_password";
-        final String LOGIN_PAGE_URL = BASE_URL + PageUrlPaths.LOGIN_PAGE;
 
         try {
-            driver.get(LOGIN_PAGE_URL);
-            WebElement inputName = driver.findElement(By.id("user-name"));
-            inputName.sendKeys(USERNAME);
+            LoginPage loginPage = new LoginPage(driver);
+            loginPage
+                    .openLoginPage()
+                    .typeUsername(USERNAME)
+                    .typePassword(PASSWORD)
+                    .clickLoginButton();
 
-            WebElement inputPassword = driver.findElement(By.id("password"));
-            inputPassword.sendKeys(PASSWORD);
-
-            WebElement loginButton = driver.findElement(By.id("login-button"));
-            loginButton.click();
-
-            Assert.assertEquals(driver.getCurrentUrl(), LOGIN_PAGE_URL, "Wrong URL");
+            Assert.assertEquals(driver.getCurrentUrl(), loginPage.getLoginPageUrl(), "Wrong URL");
 
         } finally {
             WebdriverUtils.quitDriver(driver);
