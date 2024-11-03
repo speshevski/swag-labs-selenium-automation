@@ -15,11 +15,15 @@ import utils.WebdriverUtils;
 
 import java.time.Duration;
 
+import static utils.LoggerUtils.log;
+
 @Test(groups = {TestGroups.REGRESSION, TestGroups.LOGIN})
 public class LoginTests {
 
+
     @Test(groups = {TestGroups.SANITY})
     public void testSuccessfulLogin() {
+        log.info("[TEST] Starting test: testSuccessfulLogin()");
         WebDriver driver = WebdriverUtils.setUpDriver();
         final String BASE_URL = PropertiesUtils.getBaseUrl();
         final String USERNAME = PropertiesUtils.getUsername();
@@ -28,21 +32,27 @@ public class LoginTests {
         final String INVENTORY_PAGE_URL = BASE_URL + PageUrlPaths.INVENTORY_PAGE;
 
         try {
+            log.debug("URL: {}", LOGIN_PAGE_URL);
             driver.get(LOGIN_PAGE_URL);
             WebElement inputName = driver.findElement(By.id("user-name"));
+            log.debug("Type Username");
             inputName.sendKeys(USERNAME);
 
             WebElement inputPassword = driver.findElement(By.id("password"));
+            log.debug("Type Password");
             inputPassword.sendKeys(PASSWORD);
 
+            log.debug("Click Login Button");
             WebElement loginButton = driver.findElement(By.id("login-button"));
             loginButton.click();
 
+            log.debug("Verify Inventory Page");
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3)); // explicit wait
             wait.until(ExpectedConditions.urlToBe(INVENTORY_PAGE_URL));
             WebElement pageTitle = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[data-test='title']")));
             Assert.assertEquals(pageTitle.getText(), CommonStrings.getInventoryPageTitle(), "Incorrect page title!");
         } finally {
+            log.info("[TEST] Finished test: testSuccessfulLogin()");
             WebdriverUtils.quitDriver(driver);
         }
     }

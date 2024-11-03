@@ -19,6 +19,7 @@ public class WebdriverUtils {
 
         WebDriver driver = null;
 
+        LoggerUtils.log.info("setUpDriver(" + browser + ")");
         switch (browser) {
             case "chrome": {
                 System.setProperty("webdriver.chrome.driver", driverPathChrome);
