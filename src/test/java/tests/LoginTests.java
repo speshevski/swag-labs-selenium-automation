@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import pages.LoginPage;
 import utils.PropertiesUtils;
 import utils.WebdriverUtils;
 
@@ -33,18 +34,12 @@ public class LoginTests {
 
         try {
             log.debug("URL: {}", LOGIN_PAGE_URL);
-            driver.get(LOGIN_PAGE_URL);
-            WebElement inputName = driver.findElement(By.id("user-name"));
-            log.debug("Type Username");
-            inputName.sendKeys(USERNAME);
-
-            WebElement inputPassword = driver.findElement(By.id("password"));
-            log.debug("Type Password");
-            inputPassword.sendKeys(PASSWORD);
-
-            log.debug("Click Login Button");
-            WebElement loginButton = driver.findElement(By.id("login-button"));
-            loginButton.click();
+            LoginPage loginPage = new LoginPage(driver);
+            loginPage
+                    .openLoginPage()
+                    .typeUsername(USERNAME)
+                    .typePassword(PASSWORD)
+                    .clickLoginButton();
 
             log.debug("Verify Inventory Page");
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3)); // explicit wait
