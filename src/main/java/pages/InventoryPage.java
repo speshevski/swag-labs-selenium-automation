@@ -19,10 +19,17 @@ public class InventoryPage extends BasePageClass {
         log.debug("InventoryPage()");
     }
 
-    public InventoryPage open() {
-        log.debug("openLoginPage: {}", INVENTORY_PAGE_URL);
+    public InventoryPage open(boolean verifyPage) {
+        log.debug("openInventoryPage: {}", INVENTORY_PAGE_URL);
         openUrl(INVENTORY_PAGE_URL);
+        if (verifyPage) {
+            verifyInventoryPage();
+        }
         return this;
+    }
+
+    public InventoryPage open() {
+        return open(true);
     }
 
     public String getInventoryPageTitle() {
@@ -30,7 +37,8 @@ public class InventoryPage extends BasePageClass {
         return getTextFromWebElement(getWebElement(inventoryPageTitle));
     }
 
-    public void verifyInventoryPage() {
+    public InventoryPage verifyInventoryPage() {
         waitForUrlChange(INVENTORY_PAGE_URL, Timeouts.TIME_SHORTEST);
+        return this;
     }
 }

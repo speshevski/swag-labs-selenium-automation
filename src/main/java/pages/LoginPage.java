@@ -27,10 +27,17 @@ public class LoginPage extends BasePageClass {
 
     // Mid-Level Library
     // Basic methods for actions on located elements
-    public LoginPage open() {
+    public LoginPage open(boolean verifyPage) {
         log.debug("openLoginPage: {}", LOGIN_PAGE_URL);
         openUrl(LOGIN_PAGE_URL);
+        if (verifyPage) {
+            verifyLoginPage();
+        }
         return this;
+    }
+
+    public LoginPage open() {
+        return open(true);
     }
 
     public Boolean isUsernameTextFieldDisplayed() {
@@ -70,12 +77,12 @@ public class LoginPage extends BasePageClass {
         return isWebElementEnabled(loginButtonLocator, Timeouts.TIME_SHORTEST);
     }
 
-    public LoginPage clickLoginButton() {
+    public InventoryPage clickLoginButton() {
         log.debug("Click Login Button");
         Assert.assertTrue(isLoginButtonEnabled(), "Login button is not enabled on Login Page!");
         WebElement loginButton = waitForElementToBeClickable(loginButtonLocator, Timeouts.TIME_SHORTEST);
         clickOnWebElement(loginButton);
-        return this;
+        return new InventoryPage(driver);
     }
 
     public String getLoginButtonTitle() {
@@ -85,8 +92,9 @@ public class LoginPage extends BasePageClass {
         return getAttributeValueFromWebElement(loginButton, "value");
     }
 
-    public void verifyLoginPage() {
+    public LoginPage verifyLoginPage() {
         waitForUrlChangeToExactUrl(LOGIN_PAGE_URL, Timeouts.TIME_SHORTEST);
+        return this;
     }
 
     public String getLoginPageUrl() {
@@ -95,9 +103,9 @@ public class LoginPage extends BasePageClass {
 
     // High Level Library
     // Complex methods -> containing calls to 2 or more basic methods
-    public void loginUser(String username, String password) {
-        typeUsername(username);
-        typePassword(password);
-        clickLoginButton();
+    public InventoryPage loginUser(String username, String password) {
+        return typeUsername(username)
+                .typePassword(password)
+                .clickLoginButton();
     }
 }

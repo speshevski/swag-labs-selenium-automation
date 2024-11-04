@@ -24,13 +24,11 @@ public class LoginTests {
         final String PASSWORD = PropertiesUtils.getPassword();
 
         try {
-            LoginPage loginPage = new LoginPage(driver);
-            loginPage
+            InventoryPage inventoryPage = new LoginPage(driver)
                     .open()
-                    .loginUser(USERNAME, PASSWORD);
+                    .loginUser(USERNAME, PASSWORD)
+                    .verifyInventoryPage();
 
-            InventoryPage inventoryPage = new InventoryPage(driver);
-            inventoryPage.verifyInventoryPage();
             Assert.assertEquals(inventoryPage.getInventoryPageTitle(), CommonStrings.getInventoryPageTitle(), "Incorrect page title!");
         } finally {
             log.info("[TEST] Finished test: testSuccessfulLogin()");
