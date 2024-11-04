@@ -46,7 +46,7 @@ public abstract class BasePageClass {
 
     protected Boolean isWebElementDisplayed(By locator) {
         log.trace("isWebElementDisplayed(locator: {})", locator);
-        try{
+        try {
             return getWebElement(locator).isDisplayed();
         } catch (NoSuchElementException e) {
             return false;
@@ -55,7 +55,7 @@ public abstract class BasePageClass {
 
     protected Boolean isWebElementDisplayed(By locator, int timeout) {
         log.trace("isWebElementDisplayed(locator: {}, timeout: {})", locator, timeout);
-        try{
+        try {
             return getWebElement(locator, timeout).isDisplayed();
         } catch (NoSuchElementException e) {
             return false;
@@ -64,7 +64,7 @@ public abstract class BasePageClass {
 
     protected Boolean isWebElementDisplayed(WebElement element) {
         log.trace("isWebElementDisplayed(element: {})", element);
-        try{
+        try {
             return element.isDisplayed();
         } catch (NoSuchElementException e) {
             return false;
@@ -73,7 +73,7 @@ public abstract class BasePageClass {
 
     protected Boolean isWebElementEnabled(By locator) {
         log.trace("isWebElementEnabled(locator: {})", locator);
-        try{
+        try {
             return getWebElement(locator).isEnabled();
         } catch (NoSuchElementException e) {
             return false;
@@ -82,7 +82,7 @@ public abstract class BasePageClass {
 
     protected Boolean isWebElementEnabled(By locator, int timeout) {
         log.trace("isWebElementEnabled(locator: {}, timeout: {})", locator, timeout);
-        try{
+        try {
             return getWebElement(locator, timeout).isEnabled();
         } catch (NoSuchElementException e) {
             return false;
@@ -91,7 +91,7 @@ public abstract class BasePageClass {
 
     protected Boolean isWebElementEnabled(WebElement element) {
         log.trace("isWebElementEnabled(element: {})", element);
-        try{
+        try {
             return element.isEnabled();
         } catch (NoSuchElementException e) {
             return false;
