@@ -46,4 +46,8 @@ public class WebdriverUtils {
             driver.quit();
         }
     }
+
+    public static void setImplicitWait(WebDriver driver, int timeout) {
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(timeout));
+    }
 }
