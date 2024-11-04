@@ -1,6 +1,7 @@
 package utils;
 
 import data.Browsers;
+import data.Timeouts;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -33,8 +34,8 @@ public class WebdriverUtils {
             }
         }
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
-        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(2));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Timeouts.IMPLICIT_TIMEOUT));
+        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(Timeouts.PAGE_LOAD_TIMEOUT));
 
         return driver;
     }

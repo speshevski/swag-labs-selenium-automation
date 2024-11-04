@@ -1,20 +1,17 @@
 package tests;
 
 import data.CommonStrings;
-import data.PageUrlPaths;
 import data.TestGroups;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import pages.InventoryPage;
 import pages.LoginPage;
 import utils.PropertiesUtils;
 import utils.WebdriverUtils;
-
-import java.time.Duration;
 
 import static utils.LoggerUtils.log;
 
@@ -32,16 +29,12 @@ public class LoginTests {
         try {
             LoginPage loginPage = new LoginPage(driver);
             loginPage
-                    .openLoginPage()
-                    .typeUsername(USERNAME)
-                    .typePassword(PASSWORD)
-                    .clickLoginButton();
+                    .open()
+                    .loginUser(USERNAME, PASSWORD);
 
-            log.debug("Verify Inventory Page");
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3)); // explicit wait
-            wait.until(ExpectedConditions.urlToBe(loginPage.getInventoryPageUrl()));
-            WebElement pageTitle = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[data-test='title']")));
-            Assert.assertEquals(pageTitle.getText(), CommonStrings.getInventoryPageTitle(), "Incorrect page title!");
+            InventoryPage inventoryPage = new InventoryPage(driver);
+            inventoryPage.verifyInventoryPage();
+            Assert.assertEquals(inventoryPage.getInventoryPageTitle(), CommonStrings.getInventoryPageTitle(), "Incorrect page title!");
         } finally {
             log.info("[TEST] Finished test: testSuccessfulLogin()");
             WebdriverUtils.quitDriver(driver);
@@ -50,6 +43,7 @@ public class LoginTests {
 
     @Test
     public void testUnsuccessfulLoginWrongPassword() {
+        log.info("[TEST] Starting test: testUnsuccessfulLoginWrongPassword()");
         WebDriver driver = WebdriverUtils.setUpDriver();
         final String USERNAME = PropertiesUtils.getUsername();
         final String PASSWORD = "wrong_password";
@@ -57,7 +51,7 @@ public class LoginTests {
         try {
             LoginPage loginPage = new LoginPage(driver);
             loginPage
-                    .openLoginPage()
+                    .open()
                     .typeUsername(USERNAME)
                     .typePassword(PASSWORD)
                     .clickLoginButton();
@@ -65,6 +59,7 @@ public class LoginTests {
             Assert.assertEquals(driver.getCurrentUrl(), loginPage.getLoginPageUrl(), "Wrong URL");
 
         } finally {
+            log.info("[TEST] Finished test: testUnsuccessfulLoginWrongPassword()");
             WebdriverUtils.quitDriver(driver);
         }
     }
