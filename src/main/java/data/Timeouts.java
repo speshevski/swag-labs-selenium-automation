@@ -5,6 +5,7 @@ public final class Timeouts {
     // todo: use values from properties files with timeouts for each environment
     public static final int IMPLICIT_TIMEOUT = 1;
     public static final int PAGE_LOAD_TIMEOUT = 3;
+    public static final int SCRIPT_LOAD_TIMEOUT = 3;
 
     public static final int TIME_SHORTEST = 1;
     public static final int TIME_SHORTER = 3;
