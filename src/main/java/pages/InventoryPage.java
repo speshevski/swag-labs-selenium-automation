@@ -4,11 +4,7 @@ import data.PageUrlPaths;
 import data.Timeouts;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import utils.PropertiesUtils;
-
-import java.time.Duration;
 
 import static utils.LoggerUtils.log;
 
@@ -25,13 +21,13 @@ public class InventoryPage extends BasePageClass {
 
     public InventoryPage open() {
         log.debug("openLoginPage: {}", INVENTORY_PAGE_URL);
-        driver.get(INVENTORY_PAGE_URL);
+        openUrl(INVENTORY_PAGE_URL);
         return this;
     }
 
     public String getInventoryPageTitle() {
         log.debug("getInventoryPageTitle()");
-        return getWebElement(inventoryPageTitle).getText();
+        return getTextFromWebElement(getWebElement(inventoryPageTitle));
     }
 
     public void verifyInventoryPage() {

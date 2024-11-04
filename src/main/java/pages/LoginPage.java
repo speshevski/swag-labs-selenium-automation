@@ -5,6 +5,7 @@ import data.Timeouts;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.testng.Assert;
 import utils.PropertiesUtils;
 
 import static utils.LoggerUtils.log;
@@ -28,26 +29,50 @@ public class LoginPage extends BasePageClass {
     // Basic methods for actions on located elements
     public LoginPage open() {
         log.debug("openLoginPage: {}", LOGIN_PAGE_URL);
-        driver.get(LOGIN_PAGE_URL);
+        openUrl(LOGIN_PAGE_URL);
         return this;
+    }
+
+    public Boolean isUsernameTextFieldDisplayed() {
+        log.debug("isUsernameTextFieldDisplayed()");
+        return isWebElementDisplayed(usernameTextFieldLocator, Timeouts.TIME_SHORTEST);
+    }
+
+    public Boolean isUsernameTextFieldEnabled() {
+        log.debug("isUsernameTextFieldEnabled()");
+        Assert.assertTrue(isUsernameTextFieldDisplayed(), "Username field is not displayed on Login Page!");
+        return isWebElementEnabled(usernameTextFieldLocator, Timeouts.TIME_SHORTEST);
     }
 
     public LoginPage typeUsername(String username) {
         log.debug("Type Username: {}", username);
+        Assert.assertTrue(isUsernameTextFieldEnabled(), "Username field is not enabled on Login Page!");
         WebElement usernameTextField = getWebElement(usernameTextFieldLocator);
-        usernameTextField.sendKeys(username);
+        clearAndInputTextToWebElement(usernameTextField, username);
         return this;
     }
 
     public LoginPage typePassword(String password) {
         log.debug("Type Password: {}", password);
         WebElement passwordTextField = getWebElement(passwordTextFieldLocator);
-        passwordTextField.sendKeys(password);
+        clearAndInputTextToWebElement(passwordTextField, password);
         return this;
+    }
+
+    public Boolean isLoginButtonDisplayed() {
+        log.debug("isLoginButtonDisplayed()");
+        return isWebElementDisplayed(loginButtonLocator, Timeouts.TIME_SHORTEST);
+    }
+
+    public Boolean isLoginButtonEnabled() {
+        log.debug("isLoginButtonEnabled()");
+        Assert.assertTrue(isLoginButtonDisplayed(), "Login button is not displayed on Login Page!");
+        return isWebElementEnabled(loginButtonLocator, Timeouts.TIME_SHORTEST);
     }
 
     public LoginPage clickLoginButton() {
         log.debug("Click Login Button");
+        Assert.assertTrue(isLoginButtonEnabled(), "Login button is not enabled on Login Page!");
         WebElement loginButton = waitForElementToBeClickable(loginButtonLocator, Timeouts.TIME_SHORTEST);
         clickOnWebElement(loginButton);
         return this;
