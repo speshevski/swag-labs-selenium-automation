@@ -111,7 +111,15 @@ public class LoginPage extends BasePageClass {
 
     // High Level Library
     // Complex methods -> containing calls to 2 or more basic methods
+
+    /**
+     * Login to SwagLabs with specified user
+     * @param username {String} username
+     * @param password {String} password
+     * @return [InventoryPage] new InventoryPage instance
+     */
     public InventoryPage loginUser(String username, String password) {
+        log.info("loginUser(): username: {}, password: {}", username, password);
         return typeUsername(username)
                 .typePassword(password)
                 .clickLoginButton();
