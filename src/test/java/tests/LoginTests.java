@@ -49,7 +49,7 @@ public class LoginTests {
                     .open()
                     .typeUsername(USERNAME)
                     .typePassword(PASSWORD)
-                    .clickLoginButton();
+                    .clickLoginButtonNoProgress();
 
             Assert.assertEquals(driver.getCurrentUrl(), loginPage.getLoginPageUrl(), "Wrong URL");
 

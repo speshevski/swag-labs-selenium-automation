@@ -82,7 +82,15 @@ public class LoginPage extends BasePageClass {
         Assert.assertTrue(isLoginButtonEnabled(), "Login button is not enabled on Login Page!");
         WebElement loginButton = waitForElementToBeClickable(loginButtonLocator, Timeouts.TIME_SHORTEST);
         clickOnWebElement(loginButton);
-        return new InventoryPage(driver);
+        return new InventoryPage(driver).verifyInventoryPage();
+    }
+
+    public LoginPage clickLoginButtonNoProgress() {
+        log.debug("Click Login Button with no progress");
+        Assert.assertTrue(isLoginButtonEnabled(), "Login button is not enabled on Login Page!");
+        WebElement loginButton = waitForElementToBeClickable(loginButtonLocator, Timeouts.TIME_SHORTEST);
+        clickOnWebElement(loginButton);
+        return new LoginPage(driver).verifyLoginPage();
     }
 
     public String getLoginButtonTitle() {
