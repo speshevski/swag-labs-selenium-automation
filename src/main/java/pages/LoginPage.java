@@ -78,6 +78,13 @@ public class LoginPage extends BasePageClass {
         return this;
     }
 
+    public String getLoginButtonTitle() {
+        log.debug("getLoginButtonTitle()");
+        Assert.assertTrue(isLoginButtonDisplayed(), "Login button is not displayed on Login Page!");
+        WebElement loginButton = waitForElementToBeClickable(loginButtonLocator, Timeouts.TIME_SHORTEST);
+        return getAttributeValueFromWebElement(loginButton, "value");
+    }
+
     public void verifyLoginPage() {
         waitForUrlChangeToExactUrl(LOGIN_PAGE_URL, Timeouts.TIME_SHORTEST);
     }

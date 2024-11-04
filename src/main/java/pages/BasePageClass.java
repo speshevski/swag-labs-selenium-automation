@@ -177,4 +177,9 @@ public abstract class BasePageClass {
         log.trace("getTextFromWebElement(element: {})", element);
         return element.getText();
     }
+
+    protected String getAttributeValueFromWebElement(WebElement element, String attributeName) {
+        log.trace("getAttributeValueFromWebElement(element: {}, attributeName: {})", element, attributeName);
+        return element.getAttribute(attributeName);
+    }
 }
