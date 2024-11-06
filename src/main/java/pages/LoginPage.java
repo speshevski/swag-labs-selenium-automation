@@ -2,6 +2,7 @@ package pages;
 
 import data.PageUrlPaths;
 import data.Timeouts;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -92,6 +93,14 @@ public class LoginPage extends BasePageClass {
         log.debug("Click Login Button");
         Assert.assertTrue(isLoginButtonEnabled(), "Login button is not enabled on Login Page!");
         clickOnWebElement(loginButton);
+        return new InventoryPage(driver).verifyInventoryPage();
+    }
+
+    // Example how to use Javascript Executor
+    public InventoryPage clickLoginButtonJs() {
+        log.debug("clickLoginButtonJavascriptExecutor()");
+        Assert.assertTrue(isLoginButtonEnabled(), "Login button is not enabled on Login Page!");
+        clickOnWebElementJs(loginButton);
         return new InventoryPage(driver).verifyInventoryPage();
     }
 

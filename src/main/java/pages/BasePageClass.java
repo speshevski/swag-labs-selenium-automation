@@ -2,6 +2,7 @@ package pages;
 
 import data.Timeouts;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
@@ -75,6 +76,13 @@ public abstract class BasePageClass {
         }
     }
 
+    /**
+     * Temporarily changing implicit timeout for current driver instance
+     * to solve the issue with Page Factory and fetching elements
+     * @param element [WebElement] element
+     * @param timeout [int] timeout
+     * @return [Boolean] isDisplayed
+     */
     protected Boolean isWebElementDisplayed(WebElement element, int timeout) {
         log.trace("isWebElementDisplayed(element: {}, timeout: {})", element, timeout);
         WebdriverUtils.setImplicitWait(driver, timeout);
@@ -172,6 +180,12 @@ public abstract class BasePageClass {
         log.trace("clickWebElement(locator: {}, timeout: {})", locator, timeout);
         WebElement element = waitForElementToBeClickable(locator, timeout);
         element.click();
+    }
+
+    protected void clickOnWebElementJs(WebElement element) {
+        log.trace("clickWebElementJs(element: {})", element);
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].click();", element);
     }
 
     protected void inputTextToWebElement(WebElement element, String text) {

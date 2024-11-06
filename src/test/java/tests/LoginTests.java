@@ -8,6 +8,7 @@ import org.testng.annotations.Test;
 import pages.InventoryPage;
 import pages.LoginPage;
 import utils.PropertiesUtils;
+import utils.ScreenShotUtils;
 import utils.WebdriverUtils;
 
 import static utils.LoggerUtils.log;
@@ -15,10 +16,12 @@ import static utils.LoggerUtils.log;
 @Test(groups = {TestGroups.REGRESSION, TestGroups.LOGIN})
 public class LoginTests {
 
-
     @Test(groups = {TestGroups.SANITY})
     public void testSuccessfulLogin() {
-        log.info("[TEST] Starting test: testSuccessfulLogin()");
+        final String testName = "testSuccessfulLogin()";
+        boolean testSuccess = false;
+
+        log.info("[TEST] Starting test: {}", testName);
         WebDriver driver = WebdriverUtils.setUpDriver();
         final String USERNAME = PropertiesUtils.getUsername();
         final String PASSWORD = PropertiesUtils.getPassword();
@@ -30,15 +33,21 @@ public class LoginTests {
                     .verifyInventoryPage();
 
             Assert.assertEquals(inventoryPage.getInventoryPageTitle(), CommonStrings.getInventoryPageTitle(), "Incorrect page title!");
+            testSuccess = true;
         } finally {
-            log.info("[TEST] Finished test: testSuccessfulLogin()");
+            log.info("[TEST] Finished test: {}", testName);
+            if (!testSuccess) {
+                ScreenShotUtils.takeScreenShot(driver, testName);
+            }
             WebdriverUtils.quitDriver(driver);
         }
     }
 
     @Test
     public void testUnsuccessfulLoginWrongPassword() {
-        log.info("[TEST] Starting test: testUnsuccessfulLoginWrongPassword()");
+        final String testName = "testUnsuccessfulLoginWrongPassword()";
+        boolean testSuccess = false;
+        log.info("[TEST] Starting test {}:", testName);
         WebDriver driver = WebdriverUtils.setUpDriver();
         final String USERNAME = PropertiesUtils.getUsername();
         final String PASSWORD = "wrong_password";
@@ -52,9 +61,12 @@ public class LoginTests {
                     .clickLoginButtonNoProgress();
 
             Assert.assertEquals(driver.getCurrentUrl(), loginPage.getLoginPageUrl(), "Wrong URL");
-
+            testSuccess = true;
         } finally {
-            log.info("[TEST] Finished test: testUnsuccessfulLoginWrongPassword()");
+            log.info("[TEST] Finished test {}:", testName);
+            if (!testSuccess) {
+                ScreenShotUtils.takeScreenShot(driver, testName);
+            }
             WebdriverUtils.quitDriver(driver);
         }
     }
