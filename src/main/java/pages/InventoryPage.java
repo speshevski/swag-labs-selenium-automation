@@ -2,8 +2,9 @@ package pages;
 
 import data.PageUrlPaths;
 import data.Timeouts;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import utils.PropertiesUtils;
 
 import static utils.LoggerUtils.log;
@@ -12,7 +13,10 @@ public class InventoryPage extends BasePageClass {
     private final String BASE_URL = PropertiesUtils.getBaseUrl();
     private final String INVENTORY_PAGE_URL = BASE_URL + PageUrlPaths.INVENTORY_PAGE;
 
-    private final By inventoryPageTitle = By.cssSelector("[data-test='title']");
+    // private final By inventoryPageTitle = By.cssSelector("[data-test='title']");
+
+    @FindBy(css = "[data-test='title']")
+    private WebElement inventoryTitle;
 
     public InventoryPage(WebDriver driver) {
         super(driver);
@@ -34,7 +38,7 @@ public class InventoryPage extends BasePageClass {
 
     public String getInventoryPageTitle() {
         log.debug("getInventoryPageTitle()");
-        return getTextFromWebElement(getWebElement(inventoryPageTitle));
+        return getTextFromWebElement(inventoryTitle);
     }
 
     public InventoryPage verifyInventoryPage() {

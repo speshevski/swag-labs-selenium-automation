@@ -77,4 +77,12 @@ public class PropertiesUtils {
     public static String getLocale() {
         return getProperty("locale");
     }
+
+    public static String getScreenShotsFolder() {
+        return getProperty("screenShotsFolder");
+    }
+
+    public static String getDateTimeFormat() {
+        return getProperty("dateTimeFormat");
+    }
 }

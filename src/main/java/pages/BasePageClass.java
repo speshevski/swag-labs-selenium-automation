@@ -1,10 +1,14 @@
 package pages;
 
+import data.Timeouts;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import utils.WebdriverUtils;
 
 import java.time.Duration;
 import java.util.NoSuchElementException;
@@ -16,6 +20,7 @@ public abstract class BasePageClass {
 
     protected BasePageClass(WebDriver driver) {
         this.driver = driver;
+        PageFactory.initElements(driver, this);
     }
 
     private WebDriverWait getWebDriverWait(int timeout) {
@@ -69,6 +74,21 @@ public abstract class BasePageClass {
         } catch (NoSuchElementException e) {
             return false;
         }
+    }
+
+    /**
+     * Temporarily changing implicit timeout for current driver instance
+     * to solve the issue with Page Factory and fetching elements
+     * @param element [WebElement] element
+     * @param timeout [int] timeout
+     * @return [Boolean] isDisplayed
+     */
+    protected Boolean isWebElementDisplayed(WebElement element, int timeout) {
+        log.trace("isWebElementDisplayed(element: {}, timeout: {})", element, timeout);
+        WebdriverUtils.setImplicitWait(driver, timeout);
+        boolean isDisplayed = element.isDisplayed();
+        WebdriverUtils.setImplicitWait(driver, Timeouts.IMPLICIT_TIMEOUT);
+        return isDisplayed;
     }
 
     protected Boolean isWebElementEnabled(By locator) {
@@ -160,6 +180,12 @@ public abstract class BasePageClass {
         log.trace("clickWebElement(locator: {}, timeout: {})", locator, timeout);
         WebElement element = waitForElementToBeClickable(locator, timeout);
         element.click();
+    }
+
+    protected void clickOnWebElementJs(WebElement element) {
+        log.trace("clickWebElementJs(element: {})", element);
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].click();", element);
     }
 
     protected void inputTextToWebElement(WebElement element, String text) {
